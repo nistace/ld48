@@ -9,12 +9,14 @@ using Utils.Extensions;
 public class World : MonoBehaviour {
 	private static World instance { get; set; }
 
-	[SerializeField] protected Transform _blockContainer;
-	[SerializeField] protected Transform _constructionsContainer;
-	[SerializeField] protected int       _maxY;
-	[SerializeField] protected int       _width       = 12;
-	[SerializeField] protected int       _secureDepth = 10;
-	[SerializeField] protected Block     _block;
+	[SerializeField] protected Transform   _blockContainer;
+	[SerializeField] protected Transform   _constructionsContainer;
+	[SerializeField] protected int         _maxY;
+	[SerializeField] protected int         _width       = 12;
+	[SerializeField] protected int         _secureDepth = 10;
+	[SerializeField] protected Block       _block;
+	[SerializeField] protected Transform[] _dwarfSpawns;
+	[SerializeField] protected float       _minDistanceToTheSign = 1.5f;
 
 	private List<Block[]>                        blocksPerDepth { get; } = new List<Block[]>();
 	private Dictionary<Vector2Int, Construction> constructions  { get; } = new Dictionary<Vector2Int, Construction>();
@@ -73,16 +75,31 @@ public class World : MonoBehaviour {
 	public static Vector2Int WorldPointToCoordinates(Vector3 worldPosition) => new Vector2Int((worldPosition.x.Floor() + instance._width / 2f).Floor(), instance._maxY - worldPosition.y.Ceiling());
 	public static Vector3 CoordinatesToWorldPoint(Vector2Int coordinates) => new Vector3(coordinates.x - (instance._width - 1) / 2f, instance._maxY - coordinates.y - 1, 0);
 
-	public static bool IsThereAnythingAt(Vector2Int position, out Block block, out Construction construction) {
-		block = instance.blocksPerDepth[position.y][position.x];
-		construction = instance.constructions.Of(position);
-		return block || construction;
-	}
-
+	public static bool TryGetAnything(Vector2Int position, out Block block, out Construction construction) => TryGetBlock(position, out block) | TryGetConstruction(position, out construction);
 	public static bool TryGetBlock(Vector2Int position, out Block block) => block = InGrid(position, false) ? instance.blocksPerDepth[position.y][position.x] : null;
+	public static bool TryGetConstruction(Vector2Int position, out Construction construction) => construction = instance.constructions.Of(position);
 
 	public static bool InGrid(Vector2Int position, bool orOnGround) =>
 		position.x >= 0 && position.x < instance._width && position.y >= (orOnGround ? -1 : 0) && position.y < instance.blocksPerDepth.Count;
 
 	public static bool InGrid(Vector3 worldPosition, bool orOnGround) => InGrid(WorldPointToCoordinates(worldPosition), orOnGround);
+
+	public static Transform RandomSpawn() => instance._dwarfSpawns.Random();
+
+	public static Vector3 GetClosestPositionToSignFromSpawn(Vector3 spawnPosition) {
+		if (spawnPosition.x < 0) {
+			for (var i = 0; i < instance._width / 2; ++i) {
+				var position = new Vector2Int(i, 0);
+				if (TryGetBlock(position, out _) || TryGetConstruction(position, out var construction) && construction.type.canStandOver) continue;
+				return CoordinatesToWorldPoint(new Vector2Int(Mathf.Max(0, i - 1), -1));
+			}
+			return new Vector3(-instance._minDistanceToTheSign, 0, 0);
+		}
+		for (var i = 0; i < instance._width / 2; ++i) {
+			var position = new Vector2Int(instance._width - i - 1, 0);
+			if (TryGetBlock(position, out _) || TryGetConstruction(position, out var construction) && construction.type.canStandOver) continue;
+			return CoordinatesToWorldPoint(new Vector2Int(Mathf.Min(instance._width - 1, instance._width - i), -1));
+		}
+		return new Vector3(instance._minDistanceToTheSign, 0, 0);
+	}
 }

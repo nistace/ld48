@@ -1,5 +1,4 @@
-﻿using System;
-using LD48.Game;
+﻿using LD48.Game;
 using LD48.Input;
 using TDDG.Scenes.Game.States;
 using UnityEngine;
@@ -9,7 +8,7 @@ public class GameController : MonoBehaviour {
 	[SerializeField] protected LdGame _game;
 
 	private void Start() {
-		_game.Init();
+		_game.Init(this);
 		AbstractState.Init(this, DefaultState.instance);
 	}
 

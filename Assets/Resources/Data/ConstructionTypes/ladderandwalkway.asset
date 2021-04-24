@@ -21,4 +21,6 @@ MonoBehaviour:
   _unlockedAfterCount: 20
   _placeOverEmpty: 1
   _placeOverBlock: 0
+  _canStandOver: 1
+  _canClimb: 1
   _upgrades: []

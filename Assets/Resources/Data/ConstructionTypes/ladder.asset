@@ -21,6 +21,8 @@ MonoBehaviour:
   _unlockedAfterCount: 20
   _placeOverEmpty: 1
   _placeOverBlock: 0
+  _canStandOver: 0
+  _canClimb: 1
   _upgrades:
   - _upgradeType: {fileID: 11400000, guid: 1b70068e70fcb5941a651fcc1cd7c4ae, type: 2}
     _upgradeInto: {fileID: 11400000, guid: 52e07aa901b94f3409fb5b8e45082afa, type: 2}

@@ -52,7 +52,7 @@ namespace LD48.Game {
 		private bool CheckPosition() {
 			if (LdGame.gold < type.cost) return false;
 			if (!World.InGrid(position, false)) return false;
-			var canPlaceThere = !World.IsThereAnythingAt(position, out var block, out var construction) && type.placeOverEmpty || block && type.placeOverBlock ||
+			var canPlaceThere = !World.TryGetAnything(position, out var block, out var construction) && type.placeOverEmpty || block && type.placeOverBlock ||
 										construction && type.CanTransform(construction.type, out _);
 			if (!canPlaceThere) return false;
 			return true;

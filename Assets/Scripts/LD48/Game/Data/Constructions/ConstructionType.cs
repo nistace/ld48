@@ -16,6 +16,8 @@ namespace LD48.Game.Data.Constructions {
 		[SerializeField] protected int                   _unlockedAfterCount;
 		[SerializeField] protected bool                  _placeOverEmpty = true;
 		[SerializeField] protected bool                  _placeOverBlock;
+		[SerializeField] protected bool                  _canStandOver;
+		[SerializeField] protected bool                  _canClimb;
 		[SerializeField] protected UpgradeConstruction[] _upgrades = { };
 
 		public Construction construction       => _construction;
@@ -25,6 +27,8 @@ namespace LD48.Game.Data.Constructions {
 		public int          unlockedAfterCount => _unlockedAfterCount;
 		public bool         placeOverEmpty     => _placeOverEmpty;
 		public bool         placeOverBlock     => _placeOverBlock;
+		public bool         canStandOver       => _canStandOver;
+		public bool         canClimb           => _canClimb;
 
 		public bool CanTransform(ConstructionType other, out ConstructionType result) => result = _upgrades.SingleOrDefault(t => t.upgradeType == other)?.upgradeInto;
 

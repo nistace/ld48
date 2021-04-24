@@ -23,5 +23,5 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4646905e676365145afe0fb205d88053, type: 2}
   _maxHealth: 20
   _digSpeed: 1
-  _digStrength: 0.3
-  _movementSpeed: 0.008
+  _digStrength: 0.25
+  _movementSpeed: 0.005
