@@ -37,7 +37,7 @@ public class World : MonoBehaviour {
 	}
 
 	private void CreateLine(int depth) {
-		var possibleTypes = LdMemory.gameResourceTypes.Values.Where(t => depth <= t.maxDepth && depth >= t.minDepth && t.frequency > 0).ToArray();
+		var possibleTypes = LdMemory.blockTypes.Values.Where(t => depth <= t.maxDepth && depth >= t.minDepth && t.frequency > 0).ToArray();
 		while (blocksPerDepth.Count <= depth) blocksPerDepth.Add(new Block[_width]);
 		for (var position = 0; position < _width; ++position) {
 			var block = GetNewBlock();

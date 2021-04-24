@@ -14,5 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id:
     _value: 3
+  _materials:
+  - {fileID: 2100000, guid: 1a3b16a30c39cf747815fdc65f030f30, type: 2}
+  - {fileID: 2100000, guid: a82210ebf7af54848b4589e01b05034d, type: 2}
+  - {fileID: 2100000, guid: d383f465f0a34e447a786923571c47a1, type: 2}
+  - {fileID: 2100000, guid: 47f75f382c8881645bd3e68e6cb1ebe4, type: 2}
+  - {fileID: 2100000, guid: d709947dd21e9d8418c793039d79829f, type: 2}
+  - {fileID: 2100000, guid: 4646905e676365145afe0fb205d88053, type: 2}
   _digSpeed: 2
   _digStrength: 0.6
+  _movementSpeed: 0.005
