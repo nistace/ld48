@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8008e90dcf4846d6838c5b302663a788, type: 3}
+  m_Name: Mud
+  m_EditorClassIdentifier: 
+  _id:
+    _value: 1
+  _material: {fileID: 2100000, guid: 152327018c24ac946938eec0ce76e02e, type: 2}
+  _goldValue: 0
+  _minDepth: 0
+  _maxDepth: 9999
+  _frequency: 5
