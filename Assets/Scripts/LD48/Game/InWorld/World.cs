@@ -6,6 +6,8 @@ using UnityEngine;
 using Utils.Extensions;
 
 public class World : MonoBehaviour {
+	private static World instance { get; set; }
+
 	[SerializeField] protected Transform _blockContainer;
 	[SerializeField] protected int       _maxY;
 	[SerializeField] protected int       _width       = 12;
@@ -14,6 +16,8 @@ public class World : MonoBehaviour {
 
 	private List<Block[]> blocksPerDepth { get; } = new List<Block[]>();
 	private Queue<Block>  pooledBlocks   { get; } = new Queue<Block>();
+
+	private void Awake() => instance = this;
 
 	private void Start() => Build();
 	private void OnEnable() => SetListenersEnabled(true);
@@ -41,10 +45,11 @@ public class World : MonoBehaviour {
 		while (blocksPerDepth.Count <= depth) blocksPerDepth.Add(new Block[_width]);
 		for (var position = 0; position < _width; ++position) {
 			var block = GetNewBlock();
-			block.transform.position = new Vector3(position - (_width - 1) / 2f, _maxY - depth - 1, 0);
+			var coordinates = new Vector2Int(position, depth);
+			block.transform.position = CoordinatesToWorldPoint(coordinates);
 			var blockType = possibleTypes.Random(t => t.frequency);
 			blocksPerDepth[depth][position] = block;
-			blocksPerDepth[depth][position].Init(blockType, new Vector2Int(position, depth));
+			blocksPerDepth[depth][position].Init(blockType, coordinates);
 		}
 	}
 
@@ -55,5 +60,9 @@ public class World : MonoBehaviour {
 		return block;
 	}
 
-	[ContextMenu("Clear")] private void Clear() => _blockContainer.ClearChildren();
+	public static Vector2Int WorldPointToCoordinates(Vector3 worldPosition) => new Vector2Int((worldPosition.x.Floor() + instance._width / 2f).Floor(), instance._maxY - worldPosition.y.Ceiling());
+	public static Vector3 CoordinatesToWorldPoint(Vector2Int coordinates) => new Vector3(coordinates.x - (instance._width - 1) / 2f, instance._maxY - coordinates.y - 1, 0);
+	public static bool IsThereAnythingAt(Vector2Int position, out Block block) => (block = instance.blocksPerDepth[position.y][position.x]);
+	public static bool InGrid(Vector2Int position) => position.x >= 0 && position.x < instance._width && position.y >= 0 && position.y < instance.blocksPerDepth.Count;
+	public static bool InGrid(Vector3 worldPosition) => InGrid(WorldPointToCoordinates(worldPosition));
 }

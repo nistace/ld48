@@ -17,7 +17,7 @@ namespace LD48.Input
     ""name"": ""Controls"",
     ""maps"": [
         {
-            ""name"": ""Camera"",
+            ""name"": ""Game"",
             ""id"": ""d9ceb2a6-49ab-4e13-9316-6346c7dcc175"",
             ""actions"": [
                 {
@@ -25,6 +25,30 @@ namespace LD48.Input
                     ""type"": ""Value"",
                     ""id"": ""cba3786b-9499-41a4-8047-13fd7c215721"",
                     ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""1c854f28-942e-435a-aeec-ed137d5b3eb4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b877924-fa17-458f-b473-fef734b2d1e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""41c5c43b-5ef6-47eb-b43f-cf2ce712b935"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -73,15 +97,51 @@ namespace LD48.Input
                     ""action"": ""Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77b26909-f834-4e84-98c1-87a98369c9b7"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4658c495-8cf1-4603-847c-f6dc553f0c48"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""703d1485-5bd6-4da5-a207-05cf44d63e3e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-            // Camera
-            m_Camera = asset.FindActionMap("Camera", throwIfNotFound: true);
-            m_Camera_Scroll = m_Camera.FindAction("Scroll", throwIfNotFound: true);
+            // Game
+            m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+            m_Game_Scroll = m_Game.FindAction("Scroll", throwIfNotFound: true);
+            m_Game_MousePosition = m_Game.FindAction("MousePosition", throwIfNotFound: true);
+            m_Game_Cancel = m_Game.FindAction("Cancel", throwIfNotFound: true);
+            m_Game_Interact = m_Game.FindAction("Interact", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -128,41 +188,68 @@ namespace LD48.Input
             asset.Disable();
         }
 
-        // Camera
-        private readonly InputActionMap m_Camera;
-        private ICameraActions m_CameraActionsCallbackInterface;
-        private readonly InputAction m_Camera_Scroll;
-        public struct CameraActions
+        // Game
+        private readonly InputActionMap m_Game;
+        private IGameActions m_GameActionsCallbackInterface;
+        private readonly InputAction m_Game_Scroll;
+        private readonly InputAction m_Game_MousePosition;
+        private readonly InputAction m_Game_Cancel;
+        private readonly InputAction m_Game_Interact;
+        public struct GameActions
         {
             private @Controls m_Wrapper;
-            public CameraActions(@Controls wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Scroll => m_Wrapper.m_Camera_Scroll;
-            public InputActionMap Get() { return m_Wrapper.m_Camera; }
+            public GameActions(@Controls wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Scroll => m_Wrapper.m_Game_Scroll;
+            public InputAction @MousePosition => m_Wrapper.m_Game_MousePosition;
+            public InputAction @Cancel => m_Wrapper.m_Game_Cancel;
+            public InputAction @Interact => m_Wrapper.m_Game_Interact;
+            public InputActionMap Get() { return m_Wrapper.m_Game; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
             public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(CameraActions set) { return set.Get(); }
-            public void SetCallbacks(ICameraActions instance)
+            public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+            public void SetCallbacks(IGameActions instance)
             {
-                if (m_Wrapper.m_CameraActionsCallbackInterface != null)
+                if (m_Wrapper.m_GameActionsCallbackInterface != null)
                 {
-                    @Scroll.started -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
-                    @Scroll.performed -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
-                    @Scroll.canceled -= m_Wrapper.m_CameraActionsCallbackInterface.OnScroll;
+                    @Scroll.started -= m_Wrapper.m_GameActionsCallbackInterface.OnScroll;
+                    @Scroll.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnScroll;
+                    @Scroll.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnScroll;
+                    @MousePosition.started -= m_Wrapper.m_GameActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnMousePosition;
+                    @MousePosition.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnMousePosition;
+                    @Cancel.started -= m_Wrapper.m_GameActionsCallbackInterface.OnCancel;
+                    @Cancel.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnCancel;
+                    @Cancel.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnCancel;
+                    @Interact.started -= m_Wrapper.m_GameActionsCallbackInterface.OnInteract;
+                    @Interact.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnInteract;
+                    @Interact.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnInteract;
                 }
-                m_Wrapper.m_CameraActionsCallbackInterface = instance;
+                m_Wrapper.m_GameActionsCallbackInterface = instance;
                 if (instance != null)
                 {
                     @Scroll.started += instance.OnScroll;
                     @Scroll.performed += instance.OnScroll;
                     @Scroll.canceled += instance.OnScroll;
+                    @MousePosition.started += instance.OnMousePosition;
+                    @MousePosition.performed += instance.OnMousePosition;
+                    @MousePosition.canceled += instance.OnMousePosition;
+                    @Cancel.started += instance.OnCancel;
+                    @Cancel.performed += instance.OnCancel;
+                    @Cancel.canceled += instance.OnCancel;
+                    @Interact.started += instance.OnInteract;
+                    @Interact.performed += instance.OnInteract;
+                    @Interact.canceled += instance.OnInteract;
                 }
             }
         }
-        public CameraActions @Camera => new CameraActions(this);
-        public interface ICameraActions
+        public GameActions @Game => new GameActions(this);
+        public interface IGameActions
         {
             void OnScroll(InputAction.CallbackContext context);
+            void OnMousePosition(InputAction.CallbackContext context);
+            void OnCancel(InputAction.CallbackContext context);
+            void OnInteract(InputAction.CallbackContext context);
         }
     }
 }
