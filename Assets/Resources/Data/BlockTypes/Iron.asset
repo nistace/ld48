@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8008e90dcf4846d6838c5b302663a788, type: 3}
-  m_Name: Mud
+  m_Name: Iron
   m_EditorClassIdentifier: 
   _id:
-    _value: 1
-  _material: {fileID: 2100000, guid: 152327018c24ac946938eec0ce76e02e, type: 2}
-  _goldValue: 0
-  _minDepth: 0
-  _frequency: 10
+    _value: 5
+  _material: {fileID: 2100000, guid: d44e3b4ba1fd89d44b4330a1a89f9a3b, type: 2}
+  _goldValue: 8
+  _minDepth: 48
+  _frequency: 1

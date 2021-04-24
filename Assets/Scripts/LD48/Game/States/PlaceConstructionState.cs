@@ -51,8 +51,9 @@ namespace LD48.Game {
 
 		private bool CheckPosition() {
 			if (LdGame.gold < type.cost) return false;
-			if (!World.InGrid(position)) return false;
-			var canPlaceThere = !World.IsThereAnythingAt(position, out var block) && type.placeOverEmpty || block && type.placeOverBlock;
+			if (!World.InGrid(position, false)) return false;
+			var canPlaceThere = !World.IsThereAnythingAt(position, out var block, out var construction) && type.placeOverEmpty || block && type.placeOverBlock ||
+										construction && type.CanTransform(construction.type, out _);
 			if (!canPlaceThere) return false;
 			return true;
 		}
@@ -80,9 +81,8 @@ namespace LD48.Game {
 
 		private void PlaceConstruction(InputAction.CallbackContext obj) {
 			if (!isPositionValid) return;
-			
 			LdGame.PayGold(type.cost);
-			Object.Instantiate(type.construction, World.CoordinatesToWorldPoint(position), Quaternion.identity, null);
+			World.CreateConstruction(type, position);
 			RefreshGhost();
 		}
 

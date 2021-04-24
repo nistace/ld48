@@ -1,5 +1,6 @@
 ﻿using LD48.Input;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Utils.Events;
 using Utils.Extensions;
 
@@ -24,6 +25,7 @@ namespace LD48 {
 		}
 
 		private void Update() {
+			if (EventSystem.current.IsPointerOverGameObject()) return;
 			if (Inputs.controls.Game.Scroll.ReadValue<float>() == 0) return;
 			var newY = (transform.position.y + Inputs.controls.Game.Scroll.ReadValue<float>() * Time.deltaTime * _speed).Clamp(_minY, _maxY);
 			if (newY == transform.position.y) return;

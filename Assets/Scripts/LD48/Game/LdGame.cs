@@ -22,31 +22,41 @@ namespace LD48.Game {
 
 		public void Init() {
 			instance = this;
-			_dugDepth = 0;
-			_gold = 20;
-			_blocksCleared = 0;
-			LdCamera.SetMinY(-_dugDepth);
+			SetDugDepth(0);
+			SetGold(20);
+			SetBlocksCleared(0);
 			Block.onBlockHealthChanged.AddListenerOnce(HandleBlockHealthChanged);
 		}
 
 		private void HandleBlockHealthChanged(Block block) {
 			if (block.health > 0) return;
-			_blocksCleared++;
-			onBlocksClearedChanged.Invoke(_blocksCleared);
-			if (block.type.goldValue > 0) {
-				_gold++;
-				onGoldChanged.Invoke(_gold);
-			}
-			if (_dugDepth >= block.coordinates.y) return;
-			_dugDepth = block.coordinates.y;
+			SetBlocksCleared(blocksCleared + 1);
+			if (block.type.goldValue > 0) SetGold(_gold + block.type.goldValue);
+			if (block.coordinates.y > _dugDepth) SetDugDepth(block.coordinates.y);
+		}
+
+		private void SetDugDepth(int depth) {
+			if (_dugDepth == depth) return;
+			_dugDepth = depth;
 			onDugDepthChanged.Invoke(_dugDepth);
 			LdCamera.SetMinY(-_dugDepth);
 		}
 
 		public static void PayGold(int amount) {
 			if (amount <= 0) return;
-			instance._gold--;
-			onGoldChanged.Invoke(instance._gold);
+			instance.SetGold(instance._gold - amount);
+		}
+
+		private void SetGold(int amount) {
+			if (_gold == amount) return;
+			_gold = amount;
+			onGoldChanged.Invoke(amount);
+		}
+
+		private void SetBlocksCleared(int amount) {
+			if (_blocksCleared == amount) return;
+			_blocksCleared = amount;
+			onBlocksClearedChanged.Invoke(amount);
 		}
 	}
 }

@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5739f87917e444b99d2099c8bd2dc926, type: 3}
-  m_Name: walkway
+  m_Name: ladder
   m_EditorClassIdentifier: 
   _id:
-    _value: 4
-  _construction: {fileID: 5768007223696849912, guid: c8d5a5c4a90c73e46af3f0fe8e3669a0, type: 3}
-  _displayName: Walkway
-  _sprite: {fileID: 21300000, guid: dd715962fea6fa14ea458d188a8b7b25, type: 3}
+    _value: 7
+  _construction: {fileID: 5768007223696849912, guid: fbc7ea60ec681f146a989e2dde2e6cfe, type: 3}
+  _displayName: Ladder
+  _sprite: {fileID: 21300000, guid: 2f6b29606a2fb724faf1adb1385eb3b2, type: 3}
   _cost: 1
-  _unlockedAfterCount: 5
+  _unlockedAfterCount: 20
   _placeOverEmpty: 1
   _placeOverBlock: 0
   _upgrades:
-  - _upgradeType: {fileID: 11400000, guid: 8e85227a949f7da48b8c1537112279a7, type: 2}
+  - _upgradeType: {fileID: 11400000, guid: 1b70068e70fcb5941a651fcc1cd7c4ae, type: 2}
     _upgradeInto: {fileID: 11400000, guid: 52e07aa901b94f3409fb5b8e45082afa, type: 2}

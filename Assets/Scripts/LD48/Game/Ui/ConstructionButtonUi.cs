@@ -39,6 +39,7 @@ namespace LD48.Game.Ui {
 			_lockedGameObject.SetActive(!isUnlocked);
 			_unlockConditionText.SetText($"Dig {_constructionType.unlockedAfterCount - LdGame.blocksCleared} more blocks to unlock");
 			_button.interactable = isUnlocked;
+			_costText.color = LdGame.gold >= _constructionType.cost ? Color.black : Color.red;
 		}
 	}
 }
