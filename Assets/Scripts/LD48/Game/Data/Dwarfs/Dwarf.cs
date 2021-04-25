@@ -68,7 +68,26 @@ namespace LD48.Game.Data.Dwarfs {
 			_rigidbody.isKinematic = false;
 			onStartDigging.Invoke(this);
 			StartCoroutine(PlayAi());
-			StartCoroutine(_needs.KeepDeclining());
+			StartCoroutine(DoUpdateNeeds());
+		}
+
+		private IEnumerator DoUpdateNeeds() {
+			var progressDamagesFromFood = 0f;
+			var progressDamagesFromBeer = 0f;
+			while (enabled) {
+				_needs.ContinueDecline();
+				ProgressTakingDamagesFrom(DwarfNeed.Food, ref progressDamagesFromFood);
+				ProgressTakingDamagesFrom(DwarfNeed.Beer, ref progressDamagesFromBeer);
+				yield return null;
+			}
+		}
+
+		private void ProgressTakingDamagesFrom(DwarfNeed need, ref float progress) {
+			if (_needs[need] > 0) return;
+			progress += Time.deltaTime;
+			if (progress < 8) return;
+			Damage(4);
+			progress = 0;
 		}
 
 		private IEnumerator PlayAi() {

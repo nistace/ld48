@@ -26,5 +26,5 @@ MonoBehaviour:
   _digStrength: 0.25
   _movementSpeed: 0.008
   _sleepDecline: 0.01
-  _foodDecline: 0.021
-  _beerDecline: 0.043
+  _foodDecline: 0.015
+  _beerDecline: 0.02

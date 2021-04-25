@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
-using LD48.Game.Data.Constructions;
 using UnityEngine;
 using Utils.Extensions;
 
@@ -15,7 +13,7 @@ namespace LD48.Game.Data.Dwarfs {
 			activeNeeds[(int) need] = active;
 		}
 
-		public static bool IsNeedActive(DwarfNeed need) => activeNeeds.GetSafe((int) need);
+		private static bool IsNeedActive(DwarfNeed need) => activeNeeds.GetSafe((int) need);
 
 		[SerializeField] protected IDwarfNeedsData _data;
 		[SerializeField] protected float[]         _needsFill = { };
@@ -39,13 +37,6 @@ namespace LD48.Game.Data.Dwarfs {
 			EnumUtils.Values<DwarfNeed>().ForEach(t => this[t] = 1);
 		}
 
-		public IEnumerator KeepDeclining() {
-			while (true) {
-				if (!_declineFrozen) EnumUtils.Values<DwarfNeed>().Where(IsNeedActive).ForEach(t => this[t] -= Time.deltaTime * _data.GetDeclineSpeed(t));
-				yield return null;
-			}
-		}
-
 		public int GetAdditionalMotivationToGo(Direction direction) {
 			switch (direction) {
 				case Direction.Up: return ((.8f - Mathf.Min(_needsFill)) * 10).RandomRound();
@@ -59,5 +50,10 @@ namespace LD48.Game.Data.Dwarfs {
 
 		public int GetAdditionalMotivationToUse(DwarfNeed need) => ((.8f - this[need]) * 10).RandomRound();
 		public void Restore(DwarfNeed need, float amount) => this[need] += amount;
+
+		public void ContinueDecline() {
+			if (_declineFrozen) return;
+			EnumUtils.Values<DwarfNeed>().Where(IsNeedActive).ForEach(t => this[t] -= Time.deltaTime * _data.GetDeclineSpeed(t));
+		}
 	}
 }
