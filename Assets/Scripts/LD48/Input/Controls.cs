@@ -59,7 +59,7 @@ namespace LD48.Input
                     ""id"": ""8d4fb139-565d-4013-88c8-074ee2c78e40"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
-                    ""processors"": ""Scale"",
+                    ""processors"": ""Scale(factor=10)"",
                     ""groups"": """",
                     ""action"": ""Scroll"",
                     ""isComposite"": true,

@@ -60,9 +60,9 @@ namespace LD48.Game.Data.Dwarfs {
 		private IEnumerator DoWalkUpToTheSignThenStartAi(Vector3 destination) {
 			_animator.SetMoving(true);
 			_animator.SetDirection((int) (destination.x > transform.position.x ? Direction.Right : Direction.Left));
-			_animator.SetSpeed(_type.movementSpeed * 150);
+			_animator.SetSpeed(_type.movementSpeed * 1.5f);
 			while (transform.position != destination) {
-				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
+				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed * Time.deltaTime);
 				yield return null;
 			}
 			_animator.SetMoving(false);
@@ -189,13 +189,13 @@ namespace LD48.Game.Data.Dwarfs {
 
 		private IEnumerator Move(Vector3 destination) {
 			_animator.SetMoving(true);
-			_animator.SetSpeed(_type.movementSpeed * 150);
+			_animator.SetSpeed(_type.movementSpeed * 1.5f);
 			var position = transform.position;
 			transform.forward = new Vector3(destination.x - position.x, 0, 0);
 			var checkTreadWater = 0;
 			var previousPosition = position;
 			while (checkTreadWater < 10 && transform.position.x != destination.x && !IsFalling()) {
-				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
+				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed * Time.deltaTime);
 				if (transform.position != previousPosition) {
 					checkTreadWater = 0;
 					previousPosition = transform.position;
@@ -226,13 +226,13 @@ namespace LD48.Game.Data.Dwarfs {
 		private IEnumerator Climb(Vector3 destination) {
 			var direction = destination.y < transform.position.y ? Direction.Down : Direction.Up;
 			_animator.SetMoving(true);
-			_animator.SetSpeed(_type.movementSpeed * 150);
+			_animator.SetSpeed(_type.movementSpeed * 1.5f);
 			transform.forward = Vector3.forward;
 			_rigidbody.isKinematic = true;
 			var continueClimb = true;
 			while (!IsFalling() && continueClimb) {
 				while (transform.position != destination && !IsFalling()) {
-					transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
+					transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed * Time.deltaTime);
 					yield return null;
 				}
 				if (World.TryGetConstruction(World.WorldPointToCoordinates(transform.position - Vector3.up * .5f), out var construction) && construction.type.canStandOver) continueClimb = false;

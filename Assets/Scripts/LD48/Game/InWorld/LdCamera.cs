@@ -27,7 +27,7 @@ namespace LD48 {
 		private void Update() {
 			if (EventSystem.current.IsPointerOverGameObject()) return;
 			if (Inputs.controls.Game.Scroll.ReadValue<float>() == 0) return;
-			var newY = (transform.position.y + Inputs.controls.Game.Scroll.ReadValue<float>() * Time.deltaTime * _speed).Clamp(_minY, _maxY);
+			var newY = (transform.position.y + Inputs.controls.Game.Scroll.ReadValue<float>() * _speed).Clamp(_minY, _maxY);
 			if (newY == transform.position.y) return;
 			transform.position = transform.position.With(y: newY);
 			onYChanged.Invoke(newY);
