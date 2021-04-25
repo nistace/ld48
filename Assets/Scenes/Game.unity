@@ -1429,7 +1429,7 @@ RectTransform:
   - {fileID: 800932524}
   - {fileID: 934783765}
   m_Father: {fileID: 1889131025}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2117,6 +2117,131 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800932523}
   m_CullTransparentMesh: 0
+--- !u!1001 &830972564
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2075968312}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7072302
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7069834
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -89.98
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 571a72e0c9dd2614e8cce2329275e4b9, type: 2}
+    - target: {fileID: 919132149155446097, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+      propertyPath: m_Name
+      value: Canteen
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+--- !u!4 &830972565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+  m_PrefabInstance: {fileID: 830972564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &830972566 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d3681b8c69b3a624f8bf8aec04e9c3f3, type: 3}
+  m_PrefabInstance: {fileID: 830972564}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &830972567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830972566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb90d4c197b46b3ad3fccf9220febd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: {fileID: 11400000, guid: 763ec01d8f0a44f4caa3fa103636dbea, type: 2}
+--- !u!114 &830972568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830972566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f814da6098e44b29b6dc20507ff3b3ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _need: 1
+  _capacity: 5000
+  _fullPlaceObject: {fileID: 0}
+  _restorationPerSecond: 0.3
+--- !u!114 &830972569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830972566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4d5cffae7f3ce4b90586604e0e8186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactiveGhostObjects: []
 --- !u!1 &848175803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2691,7 +2816,7 @@ RectTransform:
   m_Children:
   - {fileID: 1884000689}
   m_Father: {fileID: 1889131025}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.2, y: 1}
   m_AnchorMax: {x: 0.8, y: 1}
@@ -2882,47 +3007,56 @@ MonoBehaviour:
     - _appeared: 0
       _restorationPlace: {fileID: 428688516}
       _appearsAfterBlocks: 20
+    - _appeared: 0
+      _restorationPlace: {fileID: 830972568}
+      _appearsAfterBlocks: 150
     _scenarioScripts:
     - _hasBeenPlayed: 0
       _text: Oh god! Someone placed a "gems" sign here, in an area full of dwarfs!
-        One has already seen it and started digging!
+        Someone must make sure that nobody gets hurt! *Insisting gaze*
       _audioClip: {fileID: 0}
       _afterCountBlock: 1
-      _displayTime: 2
+      _displayTime: 10
     - _hasBeenPlayed: 0
       _text: This place will become very dangerous soon. Quick, build some walkways
         to prevent someone from having a bad fall.
       _audioClip: {fileID: 0}
       _afterCountBlock: 5
-      _displayTime: 10
+      _displayTime: 8
     - _hasBeenPlayed: 0
       _text: Build some ladders to help them get back to the surface!
       _audioClip: {fileID: 0}
       _afterCountBlock: 15
-      _displayTime: 2
+      _displayTime: 8
     - _hasBeenPlayed: 0
       _text: They built a hotel! Good thing, a tired dwarf will be angry and distracted.
         When tired, they will try to reach the surface and nap!
       _audioClip: {fileID: 0}
       _afterCountBlock: 20
-      _displayTime: 2
+      _displayTime: 8
     - _hasBeenPlayed: 0
       _text: It's getting dark down there. You should place some lights!
       _audioClip: {fileID: 0}
       _afterCountBlock: 30
-      _displayTime: 2
+      _displayTime: 8
     - _hasBeenPlayed: 1
       _text: You can place some "danger" signs on blocks that you don't want to be
         destroyed. Dwarfs are easily distracted, but take the danger signs very seriously.
       _audioClip: {fileID: 0}
       _afterCountBlock: 70
-      _displayTime: 10
+      _displayTime: 8
     - _hasBeenPlayed: 0
       _text: Build some  beds underground and the dwarfs won't need to go up to the
         surface to rest!
       _audioClip: {fileID: 0}
       _afterCountBlock: 100
-      _displayTime: 10
+      _displayTime: 8
+    - _hasBeenPlayed: 0
+      _text: 'A Canteen has been built at the surface. Hungry dwarfs die slowly and
+        painfully. You can also build Pork Gums Dispensers underground. '
+      _audioClip: {fileID: 0}
+      _afterCountBlock: 150
+      _displayTime: 8
     _scenarioUi: {fileID: 1158565323}
   _gameOverUi: {fileID: 617904266}
 --- !u!1 &1223207828
@@ -4390,8 +4524,8 @@ RectTransform:
   m_Children:
   - {fileID: 1720979057}
   - {fileID: 1142188600}
-  - {fileID: 617904265}
   - {fileID: 1158565320}
+  - {fileID: 617904265}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4434,6 +4568,7 @@ Transform:
   - {fileID: 625404529}
   - {fileID: 1487121426}
   - {fileID: 652675536}
+  - {fileID: 830972565}
   m_Father: {fileID: 936166818}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

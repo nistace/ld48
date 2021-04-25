@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8008e90dcf4846d6838c5b302663a788, type: 3}
-  m_Name: Iron
+  m_Name: Bomb
   m_EditorClassIdentifier: 
   _id:
-    _value: 5
-  _material: {fileID: 2100000, guid: d44e3b4ba1fd89d44b4330a1a89f9a3b, type: 2}
-  _goldValue: 10
-  _minDepth: 30
-  _frequency: 1
+    _value: 14
+  _material: {fileID: 2100000, guid: e7f01be00f9c8474a8e48b91ef187a6b, type: 2}
+  _goldValue: 0
+  _minDepth: 35
+  _frequency: 0.5
+  _explodesWhenDestroyed: 1
+  _radiusOfExplosion: 1

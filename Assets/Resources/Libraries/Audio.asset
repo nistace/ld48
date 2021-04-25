@@ -53,6 +53,8 @@ MonoBehaviour:
   - dwarf.beer.0
   - dwarf.food.0
   - dwarf.food.1
+  - scenarioScript
+  - explosion.0
   _items:
   - {fileID: 8300000, guid: 0e9c4a89ae6a2934aa410ac7945472bf, type: 3}
   - {fileID: 8300000, guid: e76c237eaa6dd4f429db433864ab7d76, type: 3}
@@ -90,3 +92,5 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0e9c4a89ae6a2934aa410ac7945472bf, type: 3}
   - {fileID: 8300000, guid: 1d3bae45d1046ad41b1a8dd082ece2cd, type: 3}
   - {fileID: 8300000, guid: eda160d1ea92c6545b6933084122475c, type: 3}
+  - {fileID: 8300000, guid: b2f40aa91176b81419aef1593f213949, type: 3}
+  - {fileID: 8300000, guid: 64fa141adcdb68745855d769b2b1b46c, type: 3}

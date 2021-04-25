@@ -39,7 +39,7 @@ namespace LD48.Game {
 		public static int   gold                     => instance?._gold ?? 0;
 		public static int   countDiggingDwarfs       => instance?._diggingDwarfs.Count ?? 0;
 		public static int   countDeadDwarfs          => instance?._countDeadDwarfs ?? 0;
-		public static int   maxDeadDwarfs            => instance?._maxDeadDwarfs ?? 0;
+		public static int   maxDeadDwarfs            => instance?._maxDeadDwarfs ?? 10;
 		public static Ratio progressToSpawnNextDwarf => instance?._progressToSpawnNextDwarf ?? 0;
 
 		public static IntEvent   onDugDepthChanged           { get; } = new IntEvent();
@@ -58,10 +58,23 @@ namespace LD48.Game {
 			_restorationPlacesOnGround.ForEach(t => t.Hide());
 			_scenarioScripts.ForEach(t => t.hasBeenPlayed = false);
 			EnumUtils.Values<DwarfNeed>().ForEach(t => DwarfNeeds.SetNeedActive(t, false));
-			Block.onBlockHealthChanged.AddListenerOnce(HandleBlockHealthChanged);
-			Dwarf.onDamaged.AddListenerOnce(HandleDwarfDamaged);
-			Dwarf.onStartDigging.AddListener(HandleDwarfStartedDigging);
+			SetListenersEnabled(true);
 			routineRunner.StartCoroutine(ManageDwarfs());
+		}
+
+		private void EndGame() {
+			instance._spawnDwarfsSpeed = 0;
+			onGameOver.Invoke();
+			instance._diggingDwarfs.ForEach(t => Object.Destroy(t.gameObject));
+			instance._diggingDwarfs.Clear();
+			SetListenersEnabled(false);
+			instance = null;
+		}
+
+		private void SetListenersEnabled(bool enabled) {
+			Block.onBlockHealthChanged.SetListenerActive(HandleBlockHealthChanged, enabled);
+			Dwarf.onDamaged.SetListenerActive(HandleDwarfDamaged, enabled);
+			Dwarf.onStartDigging.SetListenerActive(HandleDwarfStartedDigging, enabled);
 		}
 
 		private void HandleDwarfStartedDigging(Dwarf dwarf) {
@@ -90,6 +103,7 @@ namespace LD48.Game {
 		private void PlayScenarioScript(ScenarioScript scenarioScript) {
 			scenarioScript.hasBeenPlayed = true;
 			_scenarioUi.Show(scenarioScript);
+			AudioManager.Sfx.Play("scenarioScript");
 			if (scenarioScript.audioClip) AudioManager.Voices.Play(scenarioScript.audioClip);
 		}
 
@@ -117,13 +131,6 @@ namespace LD48.Game {
 			_countDeadDwarfs = amount;
 			onCountDeadDwarfsChanged.Invoke(amount);
 			if (_countDeadDwarfs >= _maxDeadDwarfs) EndGame();
-		}
-
-		private static void EndGame() {
-			instance._spawnDwarfsSpeed = 0;
-			onGameOver.Invoke();
-			instance._diggingDwarfs.ForEach(t => Object.Destroy(t.gameObject));
-			instance._diggingDwarfs.Clear();
 		}
 
 		private void SetBlocksCleared(int amount) {

@@ -3,8 +3,11 @@ using System.Linq;
 using LD48.Constants;
 using LD48.Game.Data.Blocks;
 using LD48.Game.Data.Constructions;
+using LD48.Game.Data.Dwarfs;
 using UnityEngine;
+using Utils.Audio;
 using Utils.Extensions;
+using Utils.Libraries;
 
 public class World : MonoBehaviour {
 	private static World instance { get; set; }
@@ -36,8 +39,22 @@ public class World : MonoBehaviour {
 		if (block.health > 0) return;
 		for (var i = blocksPerDepth.Count; i < block.coordinates.y + _secureDepth; ++i) CreateLine(i);
 		block.gameObject.SetActive(false);
+
+		if (block.type.explodesWhenDestroyed) PlayExplosion(block.coordinates, block.type.radiusOfExplosion);
 		blocksPerDepth[block.coordinates.y][block.coordinates.x] = null;
 		pooledBlocks.Enqueue(block);
+	}
+
+	private void PlayExplosion(Vector2Int coordinates, int radius) {
+		var worldPosition = CoordinatesToWorldPoint(coordinates) + Vector3.up / 2;
+		Particles.Play("explosion." + radius, worldPosition, scale: new Vector3(.1f, .1f, .1f));
+		AudioManager.Sfx.PlayRandom("explosion");
+		foreach (var itemInExplosionRange in Physics.OverlapSphere(worldPosition, radius, LayerMask.GetMask("Block", "Construction", "Dwarf"))) {
+			if (itemInExplosionRange.gameObject.TryGetComponentInParent<Block>(out var block)) block.SetHealth(0);
+			else if (itemInExplosionRange.gameObject.TryGetComponentInParent<Construction>(out var construction))
+				DestroyConstruction(WorldPointToCoordinates(construction.transform.position + Vector3.up));
+			else if (itemInExplosionRange.gameObject.TryGetComponentInParent<Dwarf>(out var dwarf)) dwarf.Damage(9999);
+		}
 	}
 
 	private void Build() {
@@ -66,14 +83,18 @@ public class World : MonoBehaviour {
 	}
 
 	public static void CreateConstruction(ConstructionType type, Vector2Int position) {
-		if (instance.constructions.ContainsKey(position)) Destroy(instance.constructions[position].gameObject);
+		DestroyConstruction(position);
 		var newConstruction = Instantiate(type.construction, CoordinatesToWorldPoint(position), Quaternion.identity, instance._constructionsContainer);
 		newConstruction.Init(type);
 		instance.constructions.Set(position, newConstruction);
 	}
 
+	public static void DestroyConstruction(Vector2Int coordinates) {
+		if (instance.constructions.ContainsKey(coordinates)) Destroy(instance.constructions[coordinates].gameObject);
+	}
+
 	public static void AddConstruction(Construction construction, Vector2Int position) {
-		if (instance.constructions.ContainsKey(position)) Destroy(instance.constructions[position].gameObject);
+		DestroyConstruction(position);
 		instance.constructions.Set(position, construction);
 	}
 

@@ -16,9 +16,9 @@ namespace LD48.Game.Data.Constructions {
 		public  float        restorationPerSecond => _restorationPerSecond;
 		public  int          countInside          { get; set; }
 
-		public void AddPersonInside() => SetCountInside(countInside++);
+		public void AddPersonInside() => SetCountInside(countInside + 1);
 
-		public void RemovePersonInside() => SetCountInside(countInside--);
+		public void RemovePersonInside() => SetCountInside(countInside - 1);
 
 		private void SetCountInside(int count) {
 			countInside = count;

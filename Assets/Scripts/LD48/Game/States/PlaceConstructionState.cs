@@ -60,7 +60,7 @@ namespace LD48.Game {
 
 		protected override void Disable() {
 			routine.Stop();
-			Object.Destroy(ghost.gameObject);
+			if (ghost) Object.Destroy(ghost.gameObject);
 		}
 
 		protected override void SetInputListenersEnabled(bool enabled) {

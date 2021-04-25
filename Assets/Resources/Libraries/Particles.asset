@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8008e90dcf4846d6838c5b302663a788, type: 3}
-  m_Name: Iron
+  m_Script: {fileID: 11500000, guid: a302d449578e4101b3566ee3b51d84df, type: 3}
+  m_Name: Particles
   m_EditorClassIdentifier: 
   _id:
-    _value: 5
-  _material: {fileID: 2100000, guid: d44e3b4ba1fd89d44b4330a1a89f9a3b, type: 2}
-  _goldValue: 10
-  _minDepth: 30
-  _frequency: 1
+    _value: 16
+  _defaultItem: {fileID: 0}
+  _orderIndex: 0
+  _itemNames:
+  - explosion.1
+  _items:
+  - {fileID: 2667739320324931439, guid: b9409e2998872cf45a650bcde55e1e55, type: 3}

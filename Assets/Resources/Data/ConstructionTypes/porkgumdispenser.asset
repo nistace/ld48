@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5739f87917e444b99d2099c8bd2dc926, type: 3}
+  m_Name: porkgumdispenser
+  m_EditorClassIdentifier: 
+  _id:
+    _value: 15
+  _construction: {fileID: 5768007223696849912, guid: 81b74dde07133b345af86ce96e7a7c7c, type: 3}
+  _canBeBuiltByPlayer: 1
+  _displayName: Pork Gum Dispenser
+  _sprite: {fileID: 21300000, guid: 172fbabc10d4c58438eaf81bab8874b6, type: 3}
+  _cost: 6
+  _unlockedAfterCount: 150
+  _placeOverEmpty: 1
+  _placeOverBlock: 0
+  _canStandOver: 1
+  _canClimb: 0
+  _preventsFromMining: 0
+  _preventsMovement: 0
+  _upgrades:
+  - _upgradeType: {fileID: 11400000, guid: 1b70068e70fcb5941a651fcc1cd7c4ae, type: 2}
+    _upgradeInto: {fileID: 11400000}

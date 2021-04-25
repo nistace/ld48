@@ -118,7 +118,7 @@ namespace LD48.Game.Data.Dwarfs {
 			Damage(Mathf.Pow((Time.time - startFallingTime) * 5, 2).RandomRound());
 		}
 
-		private void Damage(int amount) => SetHealth(_health - amount);
+		public void Damage(int amount) => SetHealth(_health - amount);
 
 		private void SetHealth(int health) {
 			if (_health <= 0) return;
@@ -136,7 +136,11 @@ namespace LD48.Game.Data.Dwarfs {
 			transform.forward = Mathf.Abs(blockPosition.y - selfPosition.y) < Mathf.Abs(blockPosition.x - selfPosition.x) ? new Vector3(blockPosition.x - selfPosition.x, 0, 0) : Vector3.back;
 			_animator.SetMining(true);
 			_animator.SetSpeed(_type.digSpeed);
-			while (block.health > 0 && !IsFalling()) yield return null;
+			var abort = false;
+			while (!abort && block.health > 0 && !IsFalling()) {
+				if (World.TryGetConstruction(block.coordinates, out var construction) && construction.type.preventsFromMining) abort = true;
+				yield return null;
+			}
 			_miningBlock = null;
 			_animator.SetMining(false);
 			_animator.ResetSpeed();
@@ -150,9 +154,17 @@ namespace LD48.Game.Data.Dwarfs {
 		private IEnumerator Move(Vector3 destination) {
 			_animator.SetMoving(true);
 			_animator.SetSpeed(_type.movementSpeed * 150);
-			transform.forward = new Vector3(destination.x - transform.position.x, 0, 0);
-			while (transform.position.x != destination.x && !IsFalling()) {
+			var position = transform.position;
+			transform.forward = new Vector3(destination.x - position.x, 0, 0);
+			var checkTreadWater = 0;
+			var previousPosition = position;
+			while (checkTreadWater < 10 && transform.position.x != destination.x && !IsFalling()) {
 				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
+				if (transform.position != previousPosition) {
+					checkTreadWater = 0;
+					previousPosition = transform.position;
+				}
+				else checkTreadWater++;
 				yield return null;
 			}
 			_animator.SetMoving(false);
