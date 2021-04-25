@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using LD48.Constants;
 using LD48.Game.Data.Blocks;
+using LD48.Game.Data.Constructions;
 using LD48.Game.Data.Dwarfs;
 using UnityEngine;
 using Utils.Events;
@@ -14,14 +16,15 @@ namespace LD48.Game {
 	public class LdGame {
 		private static LdGame instance { get; set; }
 
-		[SerializeField] protected int         _dugDepth;
-		[SerializeField] protected int         _gold;
-		[SerializeField] protected int         _blocksCleared;
-		[SerializeField] protected List<Dwarf> _diggingDwarfs = new List<Dwarf>();
-		[SerializeField] protected int         _countDeadDwarfs;
-		[SerializeField] protected Ratio       _progressToSpawnNextDwarf;
-		[SerializeField] protected float       _spawnDwarfsSpeed = .1f;
-		[SerializeField] protected Dwarf       _dwarfPrefab;
+		[SerializeField] protected int                   _dugDepth;
+		[SerializeField] protected int                   _gold;
+		[SerializeField] protected int                   _blocksCleared;
+		[SerializeField] protected List<Dwarf>           _diggingDwarfs = new List<Dwarf>();
+		[SerializeField] protected int                   _countDeadDwarfs;
+		[SerializeField] protected Ratio                 _progressToSpawnNextDwarf;
+		[SerializeField] protected float                 _spawnDwarfsSpeed = .1f;
+		[SerializeField] protected Dwarf                 _dwarfPrefab;
+		[SerializeField] protected RestorationOnGround[] _restorationPlacesOnGround;
 
 		public static int blocksCleared => instance?._blocksCleared ?? 0;
 		public static int gold          => instance?._gold ?? 0;
@@ -38,6 +41,8 @@ namespace LD48.Game {
 			SetGold(20);
 			SetBlocksCleared(0);
 			SetCountDeadDwarfs(0);
+			_restorationPlacesOnGround.ForEach(t => t.Hide());
+			EnumUtils.Values<DwarfNeed>().ForEach(t => DwarfNeeds.SetNeedActive(t, false));
 			Block.onBlockHealthChanged.AddListenerOnce(HandleBlockHealthChanged);
 			Dwarf.onDamaged.AddListenerOnce(HandleDwarfDamaged);
 			Dwarf.onStartDigging.AddListener(HandleDwarfStartedDigging);
@@ -63,6 +68,7 @@ namespace LD48.Game {
 			SetBlocksCleared(blocksCleared + 1);
 			if (block.type.goldValue > 0) SetGold(_gold + block.type.goldValue);
 			if (block.coordinates.y > _dugDepth) SetDugDepth(block.coordinates.y);
+			_restorationPlacesOnGround.Where(t => !t.appeared && t.appearsAfterBlocks <= blocksCleared).ForEach(t => t.Appear());
 		}
 
 		private void SetDugDepth(int depth) {

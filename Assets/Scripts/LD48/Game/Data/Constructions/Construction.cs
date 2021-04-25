@@ -15,5 +15,6 @@ namespace LD48.Game.Data.Constructions {
 			_inactiveGhostObjects.ForEach(t => t.SetActive(false));
 			GetComponentsInChildren<Collider>().ForEach(t => Destroy(t));
 		}
+		
 	}
 }

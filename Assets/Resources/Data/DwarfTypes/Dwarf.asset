@@ -24,4 +24,7 @@ MonoBehaviour:
   _maxHealth: 20
   _digSpeed: 1
   _digStrength: 0.25
-  _movementSpeed: 0.005
+  _movementSpeed: 0.008
+  _sleepDecline: 0.01
+  _foodDecline: 0.021
+  _beerDecline: 0.043

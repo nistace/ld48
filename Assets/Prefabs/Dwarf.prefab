@@ -4941,8 +4941,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: {fileID: 11400000, guid: 5b27fe1140af83946b44485359b79c4a, type: 2}
+  _needs:
+    _needsFill: []
+    _declineFrozen: 0
   _rigidbody: {fileID: 7449807656888236878}
   _renderer: {fileID: 7858795481428123913}
+  _visualsObject: {fileID: 7755868461966357279}
   _health: 0
   _miningBlock: {fileID: 0}
   _animator: {fileID: 5934884574807130263}
@@ -5049,6 +5053,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0cb79fb5c41456f4181bdec369e3af45, type: 3}
       propertyPath: m_Name
       value: pickax
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0cb79fb5c41456f4181bdec369e3af45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cb79fb5c41456f4181bdec369e3af45, type: 3}

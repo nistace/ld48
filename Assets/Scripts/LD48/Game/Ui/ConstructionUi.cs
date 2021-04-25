@@ -9,6 +9,7 @@ namespace LD48.Game.Ui {
 		[SerializeField] protected Transform            _constructionsContainer;
 		[SerializeField] protected ConstructionButtonUi _constructionButtonPrefab;
 
-		private void Start() => LdMemory.constructionTypes.Values.OrderBy(t => t.unlockedAfterCount).ForEach(t => Instantiate(_constructionButtonPrefab, _constructionsContainer).Set(t));
+		private void Start() => LdMemory.constructionTypes.Values.Where(t => t.canBeBuiltByPlayer).OrderBy(t => t.unlockedAfterCount)
+			.ForEach(t => Instantiate(_constructionButtonPrefab, _constructionsContainer).Set(t));
 	}
 }

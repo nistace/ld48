@@ -66,10 +66,15 @@ public class World : MonoBehaviour {
 	}
 
 	public static void CreateConstruction(ConstructionType type, Vector2Int position) {
-		if (instance.constructions.ContainsKey(position)) Destroy(instance.constructions[position]);
+		if (instance.constructions.ContainsKey(position)) Destroy(instance.constructions[position].gameObject);
 		var newConstruction = Instantiate(type.construction, CoordinatesToWorldPoint(position), Quaternion.identity, instance._constructionsContainer);
 		newConstruction.Init(type);
 		instance.constructions.Set(position, newConstruction);
+	}
+
+	public static void AddConstruction(Construction construction, Vector2Int position) {
+		if (instance.constructions.ContainsKey(position)) Destroy(instance.constructions[position].gameObject);
+		instance.constructions.Set(position, construction);
 	}
 
 	public static Vector2Int WorldPointToCoordinates(Vector3 worldPosition) => new Vector2Int((worldPosition.x.Floor() + instance._width / 2f).Floor(), instance._maxY - worldPosition.y.Ceiling());

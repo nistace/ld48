@@ -10,19 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5739f87917e444b99d2099c8bd2dc926, type: 3}
-  m_Name: ladderandwalkway
+  m_Name: dangerbox
   m_EditorClassIdentifier: 
   _id:
-    _value: 8
-  _construction: {fileID: 5768007223696849912, guid: ba78752adf6a7d64e9afb63e7cc4e070, type: 3}
-  _displayName: Ladder / Walkway
-  _sprite: {fileID: 21300000, guid: 5445c5cc26b8a6349ad0b1d1add771e7, type: 3}
-  _cost: 2
-  _unlockedAfterCount: 15
-  _placeOverEmpty: 1
-  _placeOverBlock: 0
+    _value: 9
+  _construction: {fileID: 5768007223696849912, guid: 0f1f2176670f3e842bc386f2bf280262, type: 3}
+  _displayName: Danger box
+  _sprite: {fileID: 21300000, guid: 8ff932e08e5700646b9b7202e31810ac, type: 3}
+  _cost: 3
+  _unlockedAfterCount: 60
+  _placeOverEmpty: 0
+  _placeOverBlock: 1
   _canStandOver: 1
-  _canClimb: 1
-  _preventsFromMining: 0
-  _preventsMovement: 0
+  _canClimb: 0
+  _preventsFromMining: 1
   _upgrades: []

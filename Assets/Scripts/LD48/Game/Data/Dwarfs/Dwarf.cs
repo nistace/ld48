@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using LD48.Game.Data.Blocks;
+using LD48.Game.Data.Constructions;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils.Extensions;
@@ -11,25 +13,29 @@ namespace LD48.Game.Data.Dwarfs {
 	public class Dwarf : MonoBehaviour {
 		public class Event : UnityEvent<Dwarf> { }
 
-		private static IReadOnlyList<DwarfDirectionStrategy> surroundingData { get; } = EnumUtils.Values<DwarfDirectionStrategy.Direction>().Select(t => new DwarfDirectionStrategy(t)).ToArray();
+		private static IReadOnlyDictionary<Direction, DwarfDirectionStrategy> surroundingData { get; } = EnumUtils.Values<Direction>().ToDictionary(t => t, t => new DwarfDirectionStrategy(t));
 
 		[SerializeField] protected DwarfType     _type;
+		[SerializeField] protected DwarfNeeds    _needs = new DwarfNeeds();
 		[SerializeField] protected Rigidbody     _rigidbody;
 		[SerializeField] protected Renderer      _renderer;
+		[SerializeField] protected GameObject    _visualsObject;
 		[SerializeField] protected int           _health;
 		[SerializeField] protected Block         _miningBlock;
 		[SerializeField] protected DwarfAnimator _animator;
 
-		private     Transform sTransform       { get; set; }
-		private new Transform transform        => sTransform ? sTransform : sTransform = base.transform;
-		private     float     startFallingTime { get; set; }
-		public      int       health           => _health;
+		private     Transform  sTransform                 { get; set; }
+		private new Transform  transform                  => sTransform ? sTransform : sTransform = base.transform;
+		private     float      startFallingTime           { get; set; }
+		private     Vector2Int positionBeforeLastDecision { get; set; } = new Vector2Int(-15, -15);
+		public      int        health                     => _health;
 
 		public static Event onDamaged      { get; } = new Event();
 		public static Event onStartDigging { get; } = new Event();
 
 		public void Init(DwarfType type) {
 			_type = type;
+			_needs.Init(type);
 			_health = type.maxHealth;
 			_renderer.material = _type.randomMaterial;
 			enabled = true;
@@ -46,7 +52,7 @@ namespace LD48.Game.Data.Dwarfs {
 
 		private IEnumerator DoWalkUpToTheSignThenStartAi(Vector3 destination) {
 			_animator.SetMoving(true);
-			_animator.SetDirection((int) (destination.x > transform.position.x ? DwarfDirectionStrategy.Direction.Right : DwarfDirectionStrategy.Direction.Left));
+			_animator.SetDirection((int) (destination.x > transform.position.x ? Direction.Right : Direction.Left));
 			_animator.SetSpeed(_type.movementSpeed * 200);
 			while (transform.position != destination) {
 				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
@@ -60,20 +66,24 @@ namespace LD48.Game.Data.Dwarfs {
 			_rigidbody.isKinematic = false;
 			onStartDigging.Invoke(this);
 			StartCoroutine(PlayAi());
+			StartCoroutine(_needs.KeepDeclining());
 		}
 
 		private IEnumerator PlayAi() {
 			while (enabled) {
 				if (IsFalling()) yield return StartCoroutine(TrackFalling());
 				if (!enabled) yield break;
-				yield return new WaitForSeconds(1);
+				yield return new WaitForSeconds(.4f);
 				if (IsFalling()) yield return StartCoroutine(TrackFalling());
 				if (!enabled) yield break;
-				surroundingData.ForEach(t => t.Refresh(transform.position));
-				if (TrySolveDecision(surroundingData.Random(t => t.motivation), out var coroutine)) yield return coroutine;
+				surroundingData.Values.ForEach(t => t.Refresh(transform.position, _needs, positionBeforeLastDecision));
+				SaveCurrentPositionAsBeforeLastDecision();
+				if (TrySolveDecision(surroundingData.Values.Where(t => t.motivation > 0).ToArray().Random(t => t.motivation), out var coroutine)) yield return coroutine;
 				transform.forward = Vector3.back;
 			}
 		}
+
+		private void SaveCurrentPositionAsBeforeLastDecision() => positionBeforeLastDecision = World.WorldPointToCoordinates(transform.position + Vector3.up / 2);
 
 		private bool TrySolveDecision(DwarfDirectionStrategy decision, out Coroutine coroutine) {
 			coroutine = null;
@@ -87,7 +97,12 @@ namespace LD48.Game.Data.Dwarfs {
 				case DwarfDirectionStrategy.Action.Move:
 					coroutine = StartCoroutine(Move(decision.destination));
 					return true;
-				case DwarfDirectionStrategy.Action.Climb: return false;
+				case DwarfDirectionStrategy.Action.Climb:
+					coroutine = StartCoroutine(Climb(decision.destination));
+					return true;
+				case DwarfDirectionStrategy.Action.Use:
+					coroutine = StartCoroutine(Use(decision.restorationPlaceToUse));
+					return true;
 				default: throw new ArgumentOutOfRangeException();
 			}
 		}
@@ -131,9 +146,9 @@ namespace LD48.Game.Data.Dwarfs {
 
 		private IEnumerator Move(Vector3 destination) {
 			_animator.SetMoving(true);
-			_animator.SetSpeed(_type.movementSpeed * 200);
+			_animator.SetSpeed(_type.movementSpeed * 150);
 			transform.forward = new Vector3(destination.x - transform.position.x, 0, 0);
-			while (transform.position != destination && !IsFalling()) {
+			while (transform.position.x != destination.x && !IsFalling()) {
 				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
 				yield return null;
 			}
@@ -141,6 +156,49 @@ namespace LD48.Game.Data.Dwarfs {
 			_animator.ResetSpeed();
 		}
 
+		private IEnumerator Use(RestorationPlace place) {
+			_visualsObject.gameObject.SetActive(false);
+			_needs.declineFrozen = true;
+			_rigidbody.isKinematic = true;
+			while (place.Restore(_needs)) yield return null;
+			_visualsObject.gameObject.SetActive(true);
+			_needs.declineFrozen = false;
+			_rigidbody.isKinematic = false;
+		}
+
+		private IEnumerator Climb(Vector3 destination) {
+			var direction = destination.y < transform.position.y ? Direction.Down : Direction.Up;
+			_animator.SetMoving(true);
+			_animator.SetSpeed(_type.movementSpeed * 150);
+			transform.forward = Vector3.forward;
+			_rigidbody.isKinematic = true;
+			var continueClimb = true;
+			while (!IsFalling() && continueClimb) {
+				while (transform.position != destination && !IsFalling()) {
+					transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
+					yield return null;
+				}
+				if (World.TryGetConstruction(World.WorldPointToCoordinates(transform.position - Vector3.up * .5f), out var construction) && construction.type.canStandOver) continueClimb = false;
+				else {
+					surroundingData[direction].Refresh(transform.position, _needs, positionBeforeLastDecision);
+					SaveCurrentPositionAsBeforeLastDecision();
+					continueClimb = surroundingData[direction].preferredAction == DwarfDirectionStrategy.Action.Climb && surroundingData[direction].motivation >= 0;
+					destination = surroundingData[direction].destination;
+				}
+			}
+
+			_rigidbody.isKinematic = false;
+			_animator.SetMoving(false);
+			_animator.ResetSpeed();
+		}
+
 		private bool IsFalling() => _rigidbody.velocity.y < -3f;
+
+#if UNITY_EDITOR
+		private void OnDrawGizmos() {
+			Handles.color = Color.white;
+			surroundingData.Values.ForEach(t => Handles.Label(World.CoordinatesToWorldPoint(t.destinationCoordinates), $"{t.motivation}"));
+		}
+#endif
 	}
 }

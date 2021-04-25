@@ -18,11 +18,13 @@ MonoBehaviour:
   _displayName: Ladder
   _sprite: {fileID: 21300000, guid: 2f6b29606a2fb724faf1adb1385eb3b2, type: 3}
   _cost: 1
-  _unlockedAfterCount: 20
+  _unlockedAfterCount: 15
   _placeOverEmpty: 1
   _placeOverBlock: 0
   _canStandOver: 0
   _canClimb: 1
+  _preventsFromMining: 0
+  _preventsMovement: 0
   _upgrades:
   - _upgradeType: {fileID: 11400000, guid: 1b70068e70fcb5941a651fcc1cd7c4ae, type: 2}
     _upgradeInto: {fileID: 11400000, guid: 52e07aa901b94f3409fb5b8e45082afa, type: 2}

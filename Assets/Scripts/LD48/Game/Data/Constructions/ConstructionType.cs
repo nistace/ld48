@@ -10,6 +10,7 @@ namespace LD48.Game.Data.Constructions {
 		public class Event : UnityEvent<ConstructionType> { }
 
 		[SerializeField] protected Construction          _construction;
+		[SerializeField] protected bool                  _canBeBuiltByPlayer = true;
 		[SerializeField] protected string                _displayName;
 		[SerializeField] protected Sprite                _sprite;
 		[SerializeField] protected int                   _cost;
@@ -18,9 +19,12 @@ namespace LD48.Game.Data.Constructions {
 		[SerializeField] protected bool                  _placeOverBlock;
 		[SerializeField] protected bool                  _canStandOver;
 		[SerializeField] protected bool                  _canClimb;
+		[SerializeField] protected bool                  _preventsFromMining;
+		[SerializeField] protected bool                  _preventsMovement;
 		[SerializeField] protected UpgradeConstruction[] _upgrades = { };
 
 		public Construction construction       => _construction;
+		public bool         canBeBuiltByPlayer => _canBeBuiltByPlayer;
 		public string       displayName        => _displayName;
 		public Sprite       sprite             => _sprite;
 		public int          cost               => _cost;
@@ -29,6 +33,8 @@ namespace LD48.Game.Data.Constructions {
 		public bool         placeOverBlock     => _placeOverBlock;
 		public bool         canStandOver       => _canStandOver;
 		public bool         canClimb           => _canClimb;
+		public bool         preventsFromMining => _preventsFromMining;
+		public bool         preventsMovement   => _preventsMovement;
 
 		public bool CanTransform(ConstructionType other, out ConstructionType result) => result = _upgrades.SingleOrDefault(t => t.upgradeType == other)?.upgradeInto;
 

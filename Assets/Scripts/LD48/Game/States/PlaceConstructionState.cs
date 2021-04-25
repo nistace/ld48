@@ -82,7 +82,8 @@ namespace LD48.Game {
 		private void PlaceConstruction(InputAction.CallbackContext obj) {
 			if (!isPositionValid) return;
 			LdGame.PayGold(type.cost);
-			World.CreateConstruction(type, position);
+			World.CreateConstruction(
+				World.TryGetConstruction(position, out var currentConstruction) && type.CanTransform(currentConstruction.type, out var transformationResult) ? transformationResult : type, position);
 			RefreshGhost();
 		}
 
