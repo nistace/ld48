@@ -6,6 +6,8 @@ using LD48.Constants;
 using LD48.Game.Data.Blocks;
 using LD48.Game.Data.Constructions;
 using LD48.Game.Data.Dwarfs;
+using LD48.Game.Scenario;
+using LD48.Game.Ui;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils.Audio;
@@ -29,6 +31,8 @@ namespace LD48.Game {
 		[SerializeField] protected float                 _spawnDwarfsSpeed = .1f;
 		[SerializeField] protected Dwarf                 _dwarfPrefab;
 		[SerializeField] protected RestorationOnGround[] _restorationPlacesOnGround;
+		[SerializeField] protected ScenarioScript[]      _scenarioScripts;
+		[SerializeField] protected ScenarioTextUi        _scenarioUi;
 
 		public static int   blocksCleared            => instance?._blocksCleared ?? 0;
 		public static int   dugDepth                 => instance?._dugDepth ?? 0;
@@ -52,6 +56,7 @@ namespace LD48.Game {
 			SetBlocksCleared(0);
 			SetCountDeadDwarfs(0);
 			_restorationPlacesOnGround.ForEach(t => t.Hide());
+			_scenarioScripts.ForEach(t => t.hasBeenPlayed = false);
 			EnumUtils.Values<DwarfNeed>().ForEach(t => DwarfNeeds.SetNeedActive(t, false));
 			Block.onBlockHealthChanged.AddListenerOnce(HandleBlockHealthChanged);
 			Dwarf.onDamaged.AddListenerOnce(HandleDwarfDamaged);
@@ -79,6 +84,13 @@ namespace LD48.Game {
 			if (block.type.goldValue > 0) SetGold(_gold + block.type.goldValue);
 			if (block.coordinates.y > _dugDepth) SetDugDepth(block.coordinates.y);
 			_restorationPlacesOnGround.Where(t => !t.appeared && t.appearsAfterBlocks <= blocksCleared).ForEach(t => t.Appear());
+			if (_scenarioScripts.TryFirst(t => !t.hasBeenPlayed && t.afterCountBlock <= blocksCleared, out var scenarioScript)) PlayScenarioScript(scenarioScript);
+		}
+
+		private void PlayScenarioScript(ScenarioScript scenarioScript) {
+			scenarioScript.hasBeenPlayed = true;
+			_scenarioUi.Show(scenarioScript);
+			if (scenarioScript.audioClip) AudioManager.Voices.Play(scenarioScript.audioClip);
 		}
 
 		private void SetDugDepth(int depth) {

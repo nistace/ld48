@@ -19,7 +19,7 @@ MonoBehaviour:
   _displayName: Vertical bed
   _sprite: {fileID: 21300000, guid: 3eaf9808a67348241955d6dba091bf13, type: 3}
   _cost: 5
-  _unlockedAfterCount: 80
+  _unlockedAfterCount: 100
   _placeOverEmpty: 1
   _placeOverBlock: 0
   _canStandOver: 1
