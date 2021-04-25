@@ -16,6 +16,7 @@ namespace LD48.Game {
 		private void Start() {
 			AudioClips.LoadLibrary(Resources.Load<AudioClipLibrary>("Libraries/Audio"));
 			Particles.LoadLibrary(Resources.Load<ParticlesLibrary>("Libraries/Particles"));
+			Sprites.LoadLibrary(Resources.Load<SpriteLibrary>("Libraries/Sprites"));
 		}
 	}
 }

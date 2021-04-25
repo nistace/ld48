@@ -55,5 +55,16 @@ namespace LD48.Game.Data.Dwarfs {
 			if (_declineFrozen) return;
 			EnumUtils.Values<DwarfNeed>().Where(IsNeedActive).ForEach(t => this[t] -= Time.deltaTime * _data.GetDeclineSpeed(t));
 		}
+
+		public bool TryGetCriticalNeed(out DwarfNeed dwarfNeed) {
+			dwarfNeed = DwarfNeed.Sleep;
+			var min = 1f;
+			for (var i = 0; i < _needsFill.Length; ++i) {
+				if (_needsFill[i] >= min) continue;
+				min = _needsFill[i];
+				dwarfNeed = (DwarfNeed) i;
+			}
+			return min < .3f;
+		}
 	}
 }

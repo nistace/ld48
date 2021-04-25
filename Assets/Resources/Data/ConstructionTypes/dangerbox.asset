@@ -16,10 +16,10 @@ MonoBehaviour:
     _value: 9
   _construction: {fileID: 5768007223696849912, guid: 0f1f2176670f3e842bc386f2bf280262, type: 3}
   _canBeBuiltByPlayer: 1
-  _displayName: Danger box
+  _displayName: Danger sign
   _sprite: {fileID: 21300000, guid: 8ff932e08e5700646b9b7202e31810ac, type: 3}
   _cost: 3
-  _unlockedAfterCount: 70
+  _unlockedAfterCount: 3
   _placeOverEmpty: 0
   _placeOverBlock: 1
   _canStandOver: 1

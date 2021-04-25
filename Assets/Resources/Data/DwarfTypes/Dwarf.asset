@@ -21,10 +21,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 47f75f382c8881645bd3e68e6cb1ebe4, type: 2}
   - {fileID: 2100000, guid: d709947dd21e9d8418c793039d79829f, type: 2}
   - {fileID: 2100000, guid: 4646905e676365145afe0fb205d88053, type: 2}
-  _maxHealth: 20
+  _maxHealth: 25
   _digSpeed: 1
   _digStrength: 0.25
   _movementSpeed: 0.008
   _sleepDecline: 0.01
-  _foodDecline: 0.015
-  _beerDecline: 0.02
+  _foodDecline: 0.009
+  _beerDecline: 0.008

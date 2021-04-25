@@ -14,6 +14,8 @@ namespace LD48.Game.Data.Dwarfs {
 	public class Dwarf : MonoBehaviour {
 		public class Event : UnityEvent<Dwarf> { }
 
+		public class NeedEvent : UnityEvent<Dwarf, DwarfNeed> { }
+
 		private static IReadOnlyDictionary<Direction, DwarfDirectionStrategy> surroundingData { get; } = EnumUtils.Values<Direction>().ToDictionary(t => t, t => new DwarfDirectionStrategy(t));
 
 		[SerializeField] protected DwarfType     _type;
@@ -30,9 +32,13 @@ namespace LD48.Game.Data.Dwarfs {
 		private     float      startFallingTime           { get; set; }
 		private     Vector2Int positionBeforeLastDecision { get; set; } = new Vector2Int(-15, -15);
 		public      int        health                     => _health;
+		public      bool       hasCriticalNeed            { get; private set; }
+		public      DwarfNeed  criticalNeed               { get; private set; }
 
-		public static Event onDamaged      { get; } = new Event();
-		public static Event onStartDigging { get; } = new Event();
+		public static Event     onDamaged               { get; } = new Event();
+		public static Event     onStartDigging          { get; } = new Event();
+		public static NeedEvent onHasCriticalNeed       { get; } = new NeedEvent();
+		public static Event     onHasNoMoreCriticalNeed { get; } = new Event();
 
 		public void Init(DwarfType type) {
 			_type = type;
@@ -54,7 +60,7 @@ namespace LD48.Game.Data.Dwarfs {
 		private IEnumerator DoWalkUpToTheSignThenStartAi(Vector3 destination) {
 			_animator.SetMoving(true);
 			_animator.SetDirection((int) (destination.x > transform.position.x ? Direction.Right : Direction.Left));
-			_animator.SetSpeed(_type.movementSpeed * 200);
+			_animator.SetSpeed(_type.movementSpeed * 150);
 			while (transform.position != destination) {
 				transform.position = Vector3.MoveTowards(transform.position, destination, _type.movementSpeed);
 				yield return null;
@@ -78,6 +84,17 @@ namespace LD48.Game.Data.Dwarfs {
 				_needs.ContinueDecline();
 				ProgressTakingDamagesFrom(DwarfNeed.Food, ref progressDamagesFromFood);
 				ProgressTakingDamagesFrom(DwarfNeed.Beer, ref progressDamagesFromBeer);
+				if (_needs.TryGetCriticalNeed(out var need)) {
+					if ((!hasCriticalNeed || criticalNeed != need)) {
+						hasCriticalNeed = true;
+						criticalNeed = need;
+						onHasCriticalNeed.Invoke(this, need);
+					}
+				}
+				else if (hasCriticalNeed) {
+					hasCriticalNeed = false;
+					onHasNoMoreCriticalNeed.Invoke(this);
+				}
 				yield return null;
 			}
 		}
@@ -233,7 +250,7 @@ namespace LD48.Game.Data.Dwarfs {
 		}
 
 		private bool IsFalling() => _rigidbody.velocity.y < -3f;
-
+		public float GetNeedValue(DwarfNeed need) => _needs[need];
 #if UNITY_EDITOR
 		private void OnDrawGizmos() {
 			Handles.color = Color.white;
