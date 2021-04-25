@@ -56,16 +56,19 @@ namespace LD48.Game.Data.Dwarfs {
 			if (direction == Direction.Self) return false;
 			if (World.TryGetBlock(destinationCoordinates, out _)) return false;
 			if (World.TryGetConstruction(destinationCoordinates, out var construction) && construction.type.preventsMovement) return false;
-			var constructionScore = construction && construction.TryGetComponent<RestorationPlace>(out var restorationPlace) ? needs.GetAdditionalMotivationToUse(restorationPlace.need) : 0;
 			preferredAction = Action.Move;
 			destination = World.CoordinatesToWorldPoint(destinationCoordinates);
-			motivation = 1 + directionPreferenceScore + constructionScore;
+			motivation = 1 + directionPreferenceScore;
+			if (construction && construction.TryGetComponent<RestorationPlace>(out var restorationPlace) && !restorationPlace.isFull)
+				motivation += needs.GetAdditionalMotivationToUse(restorationPlace.need);
 			return true;
 		}
 
 		private bool TestUse(IReadDwarfNeeds needs) {
 			if (direction != Direction.Self) return false;
-			if (!World.TryGetConstruction(destinationCoordinates, out var construction) || !construction.TryGetComponent<RestorationPlace>(out var restorationPlace)) return false;
+			if (!World.TryGetConstruction(destinationCoordinates, out var construction)) return false;
+			if (!construction.TryGetComponent<RestorationPlace>(out var restorationPlace)) return false;
+			if (restorationPlace.isFull) return false;
 			preferredAction = Action.Use;
 			motivation = 2 * needs.GetAdditionalMotivationToUse(restorationPlace.need);
 			restorationPlaceToUse = restorationPlace;

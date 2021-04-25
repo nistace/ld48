@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using Utils.Audio;
 
 namespace LD48.Game.Data.Dwarfs {
 	public class DwarfAnimator : MonoBehaviour {
@@ -36,6 +37,7 @@ namespace LD48.Game.Data.Dwarfs {
 
 		public void DoMiningImpact() {
 			_miningImpactParticleSystem.Play();
+			AudioManager.Sfx.PlayRandom("pickax");
 			onMiningImpact.Invoke();
 		}
 

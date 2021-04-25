@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64599dd65e6f42c5ac66c496c203301d, type: 3}
+  m_Name: Audio
+  m_EditorClassIdentifier: 
+  _id:
+    _value: 11
+  _defaultItem: {fileID: 0}
+  _orderIndex: 0
+  _itemNames:
+  - beer.0
+  - button.0
+  - button.1
+  - door.0
+  - dwarf.damaged.0
+  - dwarf.damaged.1
+  - dwarf.die.0
+  - dwarf.die.1
+  - dwarf.die.2
+  - dwarf.gemsSign.0
+  - dwarf.gemsSign.1
+  - dwarf.gemsSign.2
+  - dwarf.gemsSign.3
+  - dwarf.gemsSign.4
+  - dwarf.restored.0
+  - dwarf.restored.1
+  - dwarf.restored.2
+  - dwarf.restored.3
+  - dwarf.sleep.0
+  - dwarf.sleep.1
+  - dwarf.sleep.2
+  - dwarf.sleep.3
+  - dwarf.sleep.4
+  - food.0
+  - food.1
+  - gameOver
+  - gold.0
+  - gold.1
+  - gold.2
+  - music.in The Mine
+  - pickax.0
+  - pickax.1
+  - pickax.2
+  - dwarf.beer.0
+  - dwarf.food.0
+  - dwarf.food.1
+  _items:
+  - {fileID: 8300000, guid: 0e9c4a89ae6a2934aa410ac7945472bf, type: 3}
+  - {fileID: 8300000, guid: e76c237eaa6dd4f429db433864ab7d76, type: 3}
+  - {fileID: 8300000, guid: 5798b4288164ec9459dd6c7c0a365408, type: 3}
+  - {fileID: 8300000, guid: c10d767a438db0b40a0ace4876fc2f19, type: 3}
+  - {fileID: 8300000, guid: 14317769e90f7cd4aac148edbe24fab3, type: 3}
+  - {fileID: 8300000, guid: 6dc73a32354edc94ebf548bbc988e079, type: 3}
+  - {fileID: 8300000, guid: 489e02eb1c33fad499dbc210b81b82a9, type: 3}
+  - {fileID: 8300000, guid: ae66644cd22bac246b80591837a842d1, type: 3}
+  - {fileID: 8300000, guid: 1ca67664b07de5e41b93d0aace5fd8fc, type: 3}
+  - {fileID: 8300000, guid: fe48721ca10814e45b7dc2979246bb14, type: 3}
+  - {fileID: 8300000, guid: 90ac63cea674ffa4b94ee3c034ee6e50, type: 3}
+  - {fileID: 8300000, guid: a60aa21eee54af643a0683e5ab88d807, type: 3}
+  - {fileID: 8300000, guid: 86b6c8f21de44ac4295ddad1be63c347, type: 3}
+  - {fileID: 8300000, guid: 2af19efabe5690e4685fa4bb0df7fc4c, type: 3}
+  - {fileID: 8300000, guid: b1da405a5b42a34488af05dc7d82c124, type: 3}
+  - {fileID: 8300000, guid: f5f7752d1e2d2f943b92ee43145fd852, type: 3}
+  - {fileID: 8300000, guid: 80569ef45bd7d2a4ba3f851866832b42, type: 3}
+  - {fileID: 8300000, guid: aa14c237df600e848955e0f30d06b84c, type: 3}
+  - {fileID: 8300000, guid: 2c2a5649718a54349b2e1e63005ab3ac, type: 3}
+  - {fileID: 8300000, guid: 5d63a11804e0ff44f94f82724616e277, type: 3}
+  - {fileID: 8300000, guid: 7680f073d002d3b4fa08dffafa536347, type: 3}
+  - {fileID: 8300000, guid: c94cd1473d1e9394699044a885a959c5, type: 3}
+  - {fileID: 8300000, guid: 1694499cd5abb994eaf2d79fafa57c00, type: 3}
+  - {fileID: 8300000, guid: 1d3bae45d1046ad41b1a8dd082ece2cd, type: 3}
+  - {fileID: 8300000, guid: eda160d1ea92c6545b6933084122475c, type: 3}
+  - {fileID: 8300000, guid: 5236b891fb4d88d43b3a5ff5e27ec59c, type: 3}
+  - {fileID: 8300000, guid: 6e56eb722bca631449dd01c54cf84895, type: 3}
+  - {fileID: 8300000, guid: d8c8e740b63e16b49bba6bc03ff6685d, type: 3}
+  - {fileID: 8300000, guid: 34d3a6686851aab47864564271a17f53, type: 3}
+  - {fileID: 8300000, guid: 095979e26ab771349b5b9c0b56105865, type: 3}
+  - {fileID: 8300000, guid: 5d56ce35823e8414db9b6a111b21af47, type: 3}
+  - {fileID: 8300000, guid: 72312351f339cd24e9d27fadf606fd7c, type: 3}
+  - {fileID: 8300000, guid: 17fb8d4affac394489f03d7b6cb7c6a9, type: 3}
+  - {fileID: 8300000, guid: 0e9c4a89ae6a2934aa410ac7945472bf, type: 3}
+  - {fileID: 8300000, guid: 1d3bae45d1046ad41b1a8dd082ece2cd, type: 3}
+  - {fileID: 8300000, guid: eda160d1ea92c6545b6933084122475c, type: 3}

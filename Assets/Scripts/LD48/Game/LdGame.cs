@@ -7,9 +7,12 @@ using LD48.Game.Data.Blocks;
 using LD48.Game.Data.Constructions;
 using LD48.Game.Data.Dwarfs;
 using UnityEngine;
+using UnityEngine.Events;
+using Utils.Audio;
 using Utils.Events;
 using Utils.Extensions;
 using Utils.Types;
+using Object = UnityEngine.Object;
 
 namespace LD48.Game {
 	[Serializable]
@@ -21,19 +24,26 @@ namespace LD48.Game {
 		[SerializeField] protected int                   _blocksCleared;
 		[SerializeField] protected List<Dwarf>           _diggingDwarfs = new List<Dwarf>();
 		[SerializeField] protected int                   _countDeadDwarfs;
+		[SerializeField] protected int                   _maxDeadDwarfs = 10;
 		[SerializeField] protected Ratio                 _progressToSpawnNextDwarf;
 		[SerializeField] protected float                 _spawnDwarfsSpeed = .1f;
 		[SerializeField] protected Dwarf                 _dwarfPrefab;
 		[SerializeField] protected RestorationOnGround[] _restorationPlacesOnGround;
 
-		public static int blocksCleared => instance?._blocksCleared ?? 0;
-		public static int gold          => instance?._gold ?? 0;
+		public static int   blocksCleared            => instance?._blocksCleared ?? 0;
+		public static int   dugDepth                 => instance?._dugDepth ?? 0;
+		public static int   gold                     => instance?._gold ?? 0;
+		public static int   countDiggingDwarfs       => instance?._diggingDwarfs.Count ?? 0;
+		public static int   countDeadDwarfs          => instance?._countDeadDwarfs ?? 0;
+		public static int   maxDeadDwarfs            => instance?._maxDeadDwarfs ?? 0;
+		public static Ratio progressToSpawnNextDwarf => instance?._progressToSpawnNextDwarf ?? 0;
 
-		public static IntEvent onDugDepthChanged           { get; } = new IntEvent();
-		public static IntEvent onGoldChanged               { get; } = new IntEvent();
-		public static IntEvent onBlocksClearedChanged      { get; } = new IntEvent();
-		public static IntEvent onCountDeadDwarfsChanged    { get; } = new IntEvent();
-		public static IntEvent onCountDiggingDwarfsChanged { get; } = new IntEvent();
+		public static IntEvent   onDugDepthChanged           { get; } = new IntEvent();
+		public static IntEvent   onGoldChanged               { get; } = new IntEvent();
+		public static IntEvent   onBlocksClearedChanged      { get; } = new IntEvent();
+		public static IntEvent   onCountDeadDwarfsChanged    { get; } = new IntEvent();
+		public static IntEvent   onCountDiggingDwarfsChanged { get; } = new IntEvent();
+		public static UnityEvent onGameOver                  { get; } = new UnityEvent();
 
 		public void Init(MonoBehaviour routineRunner) {
 			instance = this;
@@ -85,6 +95,7 @@ namespace LD48.Game {
 
 		private void SetGold(int amount) {
 			if (_gold == amount) return;
+			if (_gold < amount) AudioManager.Sfx.PlayRandom("gold");
 			_gold = amount;
 			onGoldChanged.Invoke(amount);
 		}
@@ -93,6 +104,14 @@ namespace LD48.Game {
 			if (_countDeadDwarfs == amount) return;
 			_countDeadDwarfs = amount;
 			onCountDeadDwarfsChanged.Invoke(amount);
+			if (_countDeadDwarfs >= _maxDeadDwarfs) EndGame();
+		}
+
+		private static void EndGame() {
+			instance._spawnDwarfsSpeed = 0;
+			onGameOver.Invoke();
+			instance._diggingDwarfs.ForEach(t => Object.Destroy(t.gameObject));
+			instance._diggingDwarfs.Clear();
 		}
 
 		private void SetBlocksCleared(int amount) {
@@ -104,7 +123,7 @@ namespace LD48.Game {
 		private static void SpawnDwarf() {
 			var spawn = World.RandomSpawn().position;
 			var destination = World.GetClosestPositionToSignFromSpawn(spawn);
-			var dwarf = UnityEngine.Object.Instantiate(instance._dwarfPrefab, spawn, Quaternion.identity, null);
+			var dwarf = Object.Instantiate(instance._dwarfPrefab, spawn, Quaternion.identity, null);
 			dwarf.Init(LdMemory.dwarfTypes.Values.Random());
 			dwarf.WalkUpToTheSign(spawn, destination);
 		}

@@ -7,6 +7,7 @@ using LD48.Game.Data.Constructions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Utils.Audio;
 using Utils.Extensions;
 
 namespace LD48.Game.Data.Dwarfs {
@@ -61,6 +62,7 @@ namespace LD48.Game.Data.Dwarfs {
 			_animator.SetMoving(false);
 			_animator.ResetSpeed();
 			_animator.TriggerTakePickax();
+			AudioManager.Sfx.PlayRandom("dwarf.gemsSign");
 			yield return new WaitForSeconds(2);
 			_animator.pickax.gameObject.SetActive(true);
 			_rigidbody.isKinematic = false;
@@ -123,6 +125,7 @@ namespace LD48.Game.Data.Dwarfs {
 			_health = health;
 			enabled = _health > 0;
 			onDamaged.Invoke(this);
+			AudioManager.Sfx.PlayRandom(_health <= 0 ? "dwarf.die" : "dwarf.damaged");
 			if (_health <= 0) _animator.TriggerDie();
 		}
 
@@ -157,13 +160,19 @@ namespace LD48.Game.Data.Dwarfs {
 		}
 
 		private IEnumerator Use(RestorationPlace place) {
+			place.AddPersonInside();
 			_visualsObject.gameObject.SetActive(false);
 			_needs.declineFrozen = true;
 			_rigidbody.isKinematic = true;
+			AudioManager.Sfx.PlayRandom("door");
+			AudioManager.Sfx.PlayRandom($"dwarf.{place.need}");
 			while (place.Restore(_needs)) yield return null;
 			_visualsObject.gameObject.SetActive(true);
 			_needs.declineFrozen = false;
 			_rigidbody.isKinematic = false;
+			AudioManager.Sfx.PlayRandom("door");
+			AudioManager.Sfx.PlayRandom("dwarf.restored");
+			place.RemovePersonInside();
 		}
 
 		private IEnumerator Climb(Vector3 destination) {
