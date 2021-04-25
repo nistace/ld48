@@ -16,5 +16,7 @@ MonoBehaviour:
     _value: 5
   _material: {fileID: 2100000, guid: d44e3b4ba1fd89d44b4330a1a89f9a3b, type: 2}
   _goldValue: 10
-  _minDepth: 30
+  _minDepth: 25
   _frequency: 1
+  _explodesWhenDestroyed: 0
+  _radiusOfExplosion: 1
