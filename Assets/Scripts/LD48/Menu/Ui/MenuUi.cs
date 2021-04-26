@@ -9,10 +9,12 @@ namespace LD48.Menu.Ui {
 		private static MenuUi instance { get; set; }
 
 		[SerializeField] protected Button _startButton;
+		[SerializeField] protected Button _exitButton;
 		[SerializeField] protected Slider _musicSlider;
 		[SerializeField] protected Slider _sfxSlider;
 
 		public static UnityEvent onStartButtonClicked => instance._startButton.onClick;
+		public static UnityEvent onExitButtonClicked  => instance._exitButton.onClick;
 
 		private void Awake() {
 			instance = this;
